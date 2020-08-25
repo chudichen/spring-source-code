@@ -515,6 +515,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	@Override
 	public void refresh() throws BeansException, IllegalStateException {
+		// 给容器的refresh加锁，避免容器在refresh阶段，进行初始化或者销毁操作
 		synchronized (this.startupShutdownMonitor) {
 			// Prepare this context for refreshing.
 			prepareRefresh();
@@ -522,6 +523,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			// Tell the subclass to refresh the internal bean factory.
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
+			// 注册一些容器中需要用到的系统Bean，比如classloader
 			// Prepare the bean factory for use in this context.
 			prepareBeanFactory(beanFactory);
 
