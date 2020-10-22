@@ -136,15 +136,22 @@ public class FileSystemXmlApplicationContext extends AbstractXmlApplicationConte
 			String[] configLocations, boolean refresh, @Nullable ApplicationContext parent)
 			throws BeansException {
 
+		// 动态地确定用哪个加载器去加载我们的配置文件
 		super(parent);
+		// 告诉读取器，配置文件放在哪里，该方法基于爷类AbstractRefreshableConfigApplicationContext
 		setConfigLocations(configLocations);
 		if (refresh) {
+			// 容器初始化
 			refresh();
 		}
 	}
 
 
 	/**
+	 * 实例化一个{@link org.springframework.core.io.FileSystemResource},
+	 * 以便于后续对资源进行IO操作，本方法实在其父类{@link org.springframework.core.io.DefaultResourceLoader#getResource(String)}
+	 * 中被调用的
+	 *
 	 * Resolve resource paths as file system paths.
 	 * <p>Note: Even if a given path starts with a slash, it will get
 	 * interpreted as relative to the current VM working directory.
