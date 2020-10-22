@@ -140,6 +140,12 @@ public class DefaultResourceLoader implements ResourceLoader {
 	}
 
 
+	/**
+	 * 获取Resource的具体实现方法
+	 *
+	 * @param location the resource location
+	 * @return 资源
+	 */
 	@Override
 	public Resource getResource(String location) {
 		Assert.notNull(location, "Location must not be null");
@@ -154,16 +160,22 @@ public class DefaultResourceLoader implements ResourceLoader {
 		if (location.startsWith("/")) {
 			return getResourceByPath(location);
 		}
+		// 如果location是类路径的方式，返回ClassPathResource类型的资源文件对象
 		else if (location.startsWith(CLASSPATH_URL_PREFIX)) {
 			return new ClassPathResource(location.substring(CLASSPATH_URL_PREFIX.length()), getClassLoader());
 		}
 		else {
 			try {
+				// 如果是URL方法，返回UrlResource类型的文件资源对象，
+				// 否则将抛出的异常进入catch代码块，返回另一种资源对象
 				// Try to parse the location as a URL...
 				URL url = new URL(location);
 				return (ResourceUtils.isFileURL(url) ? new FileUrlResource(url) : new UrlResource(url));
 			}
 			catch (MalformedURLException ex) {
+				// 如果既不是classpath标识，又不是URL标识的Resource定位，则调用容器本身的
+				// getResourceByPath()方法获取Resource。根据实例化的子类对象，调用其子类对象中
+				// 重写的此方法，如FileSystemXmlApplicationContext子类对此方法的重写
 				// No URL -> resolve as resource path.
 				return getResourceByPath(location);
 			}

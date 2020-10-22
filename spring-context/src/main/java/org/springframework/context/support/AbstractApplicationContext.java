@@ -513,45 +513,70 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		return this.applicationListeners;
 	}
 
+	/**
+	 * 容器初始化的过程：{@link org.springframework.beans.factory.config.BeanDefinition}中{@link Resource}的定位，
+	 * {@link org.springframework.beans.factory.config.BeanDefinition}的载入和注册。
+	 * 依赖注入和载入是两个独立的过程，一般依赖注入是发生在应用第一次通过getBean()方法获取Bean的时候。
+	 *
+	 * 另外值得注意的是IOC容器有个预实例化的配置（即，将{@link org.springframework.beans.factory.support.AbstractBeanDefinition}
+	 * 中的lazyInit属性设置为true），使用户可以对容器的初始化过程做一个微小的调控，lazy属性设置为false的bean，
+	 * 在IOC容器初始化的时候进行依赖注入，而不用等到第一次getBean（）的时候。
+	 *
+	 * @throws BeansException 注入失败
+	 * @throws IllegalStateException 状态异常
+	 */
 	@Override
 	public void refresh() throws BeansException, IllegalStateException {
 		// 给容器的refresh加锁，避免容器在refresh阶段，进行初始化或者销毁操作
 		synchronized (this.startupShutdownMonitor) {
+			// 调用容器准备刷新，获取容器当前时间，同时给容器设置同步标示
 			// Prepare this context for refreshing.
 			prepareRefresh();
 
+			// 告诉子类启动refreshBeanFactory()方法，BeanDefinition的配置文件资源
+			// 载入子类的refreshBeanFactory()方法启动开始。
 			// Tell the subclass to refresh the internal bean factory.
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
-			// 注册一些容器中需要用到的系统Bean，比如classloader
+			// 为BeanFactory配置容器特性，例如类加载器、事件处理器等
 			// Prepare the bean factory for use in this context.
 			prepareBeanFactory(beanFactory);
 
 			try {
+				// 为容器的某些子类指定特殊的BeanPost事件处理器
 				// Allows post-processing of the bean factory in context subclasses.
 				postProcessBeanFactory(beanFactory);
 
+				// 调用所有注册的BeanFactoryPostProcessor的Bean
 				// Invoke factory processors registered as beans in the context.
 				invokeBeanFactoryPostProcessors(beanFactory);
 
+				// 为BeanFactory注册BeanPost事件处理器。
+				// BeanPostProcessor是Bean后置处理器，用于监听容器的触发事件。
 				// Register bean processors that intercept bean creation.
 				registerBeanPostProcessors(beanFactory);
 
+				// 初始化信息源，和国际化相关
 				// Initialize message source for this context.
 				initMessageSource();
 
+				// 初始化容器的事件传播器
 				// Initialize event multicaster for this context.
 				initApplicationEventMulticaster();
 
+				// 调用子类的某些特殊Bean初始化方法
 				// Initialize other special beans in specific context subclasses.
 				onRefresh();
 
+				// 为事件传播器注册事件监听器.
 				// Check for listener beans and register them.
 				registerListeners();
 
+				// 初始化Bean，并对lazy-init属性进行处理
 				// Instantiate all remaining (non-lazy-init) singletons.
 				finishBeanFactoryInitialization(beanFactory);
 
+				// 初始化容器的生命周期事件处理器，并发布容器的生命周期事件
 				// Last step: publish corresponding event.
 				finishRefresh();
 			}
@@ -562,9 +587,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 							"cancelling refresh attempt: " + ex);
 				}
 
+				// 销毁以创建的单例Bean
 				// Destroy already created singletons to avoid dangling resources.
 				destroyBeans();
 
+				// 取消refresh操作，重置容器的同步标示
 				// Reset 'active' flag.
 				cancelRefresh(ex);
 
@@ -631,13 +658,19 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	}
 
 	/**
+	 * 告诉子类去刷新内部的beanFactory
+	 *
 	 * Tell the subclass to refresh the internal bean factory.
 	 * @return the fresh BeanFactory instance
 	 * @see #refreshBeanFactory()
 	 * @see #getBeanFactory()
 	 */
 	protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
+		// 自定义的抽象的refreshBeanFactory方法，具体的实现交给子类
 		refreshBeanFactory();
+		// getBeanFactory也是一个抽象方法，具体的实现方法交给子类，
+		// 这里看到的很容易联想到“模板方法”设计模式，父类在模板中定义好流程
+		// 具体的实现交给子类去实现
 		return getBeanFactory();
 	}
 
