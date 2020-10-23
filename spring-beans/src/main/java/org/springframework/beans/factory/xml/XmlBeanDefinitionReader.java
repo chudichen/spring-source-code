@@ -334,10 +334,13 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 		// 从resource中获取输入流，并对resource的内容进行读取
 		try (InputStream inputStream = encodedResource.getResource().getInputStream()) {
+			// 实例化一个"XML 实体的单个输入源"，将inputStream作为自己的属性
 			InputSource inputSource = new InputSource(inputStream);
 			if (encodedResource.getEncoding() != null) {
+				// 设置编码格式
 				inputSource.setEncoding(encodedResource.getEncoding());
 			}
+			// 这里是具体的读取过程
 			return doLoadBeanDefinitions(inputSource, encodedResource.getResource());
 		}
 		catch (IOException ex) {
@@ -378,6 +381,8 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 
 	/**
+	 * 从指定的XML配置文件中解析bean，并封装成BeanDefinition对象的具体实现
+	 *
 	 * Actually load bean definitions from the specified XML file.
 	 * @param inputSource the SAX InputSource to read from
 	 * @param resource the resource descriptor for the XML file
@@ -390,7 +395,9 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 			throws BeanDefinitionStoreException {
 
 		try {
+			// 解析XML文件获取Document对象
 			Document doc = doLoadDocument(inputSource, resource);
+			// 启动对BeanDefinition的详细解析过程，该解析过程会用到Spring的Bean配置规则
 			int count = registerBeanDefinitions(doc, resource);
 			if (logger.isDebugEnabled()) {
 				logger.debug("Loaded " + count + " bean definitions from " + resource);
@@ -496,6 +503,8 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	}
 
 	/**
+	 * 按照Spring对配置文件中bean元素的语义定义，将bean元素解析成BeanDefinition对象
+	 *
 	 * Register the bean definitions contained in the given DOM document.
 	 * Called by {@code loadBeanDefinitions}.
 	 * <p>Creates a new instance of the parser class and invokes
@@ -509,9 +518,14 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	 * @see BeanDefinitionDocumentReader#registerBeanDefinitions
 	 */
 	public int registerBeanDefinitions(Document doc, Resource resource) throws BeanDefinitionStoreException {
+		// 得到BeanDefinitionDocumentReader，将XML中配置的bean解析成BeanDefinition对象
+		// BeanDefinitionDocumentReader只是一个接口，这里实际上是一个DefaultBeanDefinitionDocumentReader
 		BeanDefinitionDocumentReader documentReader = createBeanDefinitionDocumentReader();
+		// 获取容器中珠海的bean数量
 		int countBefore = getRegistry().getBeanDefinitionCount();
+		// 解析过程入口
 		documentReader.registerBeanDefinitions(doc, createReaderContext(resource));
+		// 统计解析的Bean数量
 		return getRegistry().getBeanDefinitionCount() - countBefore;
 	}
 
