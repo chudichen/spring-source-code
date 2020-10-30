@@ -1213,17 +1213,22 @@ public class BeanDefinitionParserDelegate {
 	}
 
 	/**
-	 *
+	 * 解析<list>集合子元素
 	 *
 	 * Parse a list element.
 	 */
 	public List<Object> parseListElement(Element collectionEle, @Nullable BeanDefinition bd) {
+		// 获取<list>元素中的value-type属性，即获取集合元素的数据类型
 		String defaultElementType = collectionEle.getAttribute(VALUE_TYPE_ATTRIBUTE);
+		// 获取<list>集合元素中的所有子节点
 		NodeList nl = collectionEle.getChildNodes();
+		// Spring中将List封装为ManagedList
 		ManagedList<Object> target = new ManagedList<>(nl.getLength());
 		target.setSource(extractSource(collectionEle));
+		// 设置集合目标数据类型
 		target.setElementTypeName(defaultElementType);
 		target.setMergeEnabled(parseMergeAttribute(collectionEle));
+		// 具体的<list>元素解析
 		parseCollectionElements(nl, target, bd, defaultElementType);
 		return target;
 	}
@@ -1242,12 +1247,18 @@ public class BeanDefinitionParserDelegate {
 		return target;
 	}
 
+	/**
+	 * 具体解析<list>集合元素，<array>，<list>，<set>都使用该方法解析
+	 */
 	protected void parseCollectionElements(
 			NodeList elementNodes, Collection<Object> target, @Nullable BeanDefinition bd, String defaultElementType) {
 
+		// 遍历所有的节点集合
 		for (int i = 0; i < elementNodes.getLength(); i++) {
 			Node node = elementNodes.item(i);
+			// 节点不是description节点
 			if (node instanceof Element && !nodeNameEquals(node, DESCRIPTION_ELEMENT)) {
+				// 将解析的元素加入集合中，递归调用下一个子元素
 				target.add(parsePropertySubElement((Element) node, bd, defaultElementType));
 			}
 		}
