@@ -496,7 +496,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		// Prepare method overrides.
 		try {
-			// 教研和准备bean中的方法覆盖
+			// 校验和准备bean中的方法覆盖
 			mbdToUse.prepareMethodOverrides();
 		}
 		catch (BeanDefinitionValidationException ex) {
@@ -605,7 +605,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
 		}
 
-		// bean对象的初始化，依赖注入在触发
+		// bean对象的初始化，依赖注入在此触发
 		// 这个exposedObject在初始化完成之后，将返回作为依赖注入完成后的bean
 		// Initialize the bean instance.
 		Object exposedObject = bean;

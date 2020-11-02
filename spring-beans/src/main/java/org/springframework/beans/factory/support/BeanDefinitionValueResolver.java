@@ -87,6 +87,8 @@ class BeanDefinitionValueResolver {
 
 
 	/**
+	 * 解析属性值，对注入类型进行转换
+	 *
 	 * Given a PropertyValue, return a value, resolving any references to other
 	 * beans in the factory if necessary. The value could be:
 	 * <li>A BeanDefinition, which leads to the creation of a corresponding
@@ -106,12 +108,19 @@ class BeanDefinitionValueResolver {
 	 */
 	@Nullable
 	public Object resolveValueIfNecessary(Object argName, @Nullable Object value) {
+		// 对引用类型的属性进行解析，RuntimeBeanReference是在对BeanDefinition进行解析时生成的数据对象
 		// We must check each value to see whether it requires a runtime reference
 		// to another bean to be resolved.
 		if (value instanceof RuntimeBeanReference) {
 			RuntimeBeanReference ref = (RuntimeBeanReference) value;
+			/*
+			 * ！！！！！！！！！！！！！！！！
+			 * 解析引用类型的属性值
+			 * ！！！！！！！！！！！！！！！！
+			 */
 			return resolveReference(argName, ref);
 		}
+		// 对属性值是引用容器中另一个bean名称的解析
 		else if (value instanceof RuntimeBeanNameReference) {
 			String refName = ((RuntimeBeanNameReference) value).getBeanName();
 			refName = String.valueOf(doEvaluate(refName));
@@ -144,14 +153,18 @@ class BeanDefinitionValueResolver {
 			}
 			return result;
 		}
+		// 对集合数组类型的属性解析
 		else if (value instanceof ManagedArray) {
 			// May need to resolve contained runtime references.
 			ManagedArray array = (ManagedArray) value;
+			// 获取数组的类型
 			Class<?> elementType = array.resolvedElementType;
 			if (elementType == null) {
+				// 获取数组元素的类型
 				String elementTypeName = array.getElementTypeName();
 				if (StringUtils.hasText(elementTypeName)) {
 					try {
+						// 使用反射机制创建指定类型的对象
 						elementType = ClassUtils.forName(elementTypeName, this.beanFactory.getBeanClassLoader());
 						array.resolvedElementType = elementType;
 					}
@@ -163,11 +176,14 @@ class BeanDefinitionValueResolver {
 					}
 				}
 				else {
+					// 没有获得到数组的类型，也没有获取到数组元素的类型
+					// 则直接设置数组的类型为Object
 					elementType = Object.class;
 				}
 			}
 			return resolveManagedArray(argName, (List<?>) value, elementType);
 		}
+		// 解析list类型的属性值
 		else if (value instanceof ManagedList) {
 			// May need to resolve contained runtime references.
 			return resolveManagedList(argName, (List<?>) value);

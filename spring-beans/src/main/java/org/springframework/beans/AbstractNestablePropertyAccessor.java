@@ -248,6 +248,7 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 
 	@Override
 	public void setPropertyValue(PropertyValue pv) throws BeansException {
+		// PropertyTokenHolder是一个用于内部使用的内部类
 		PropertyTokenHolder tokens = (PropertyTokenHolder) pv.resolvedTokens;
 		if (tokens == null) {
 			String propertyName = pv.getName();
@@ -266,6 +267,11 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 			nestedPa.setPropertyValue(tokens, pv);
 		}
 		else {
+			/*
+			 * ！！！！！！！！！！！！！！！
+			 * 进入 bean 属性值注入的具体实现
+			 * ！！！！！！！！！！！！！！！
+			 */
 			setPropertyValue(tokens, pv);
 		}
 	}
