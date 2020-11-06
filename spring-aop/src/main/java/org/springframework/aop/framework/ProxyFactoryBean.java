@@ -238,6 +238,9 @@ public class ProxyFactoryBean extends ProxyCreatorSupport
 
 
 	/**
+	 * 返回一个代理对象，当用户从FactoryBean中获取bean调用时，
+	 * 创建此工厂要返回的AOP代理实例，该实例将作为一个单例被缓存
+	 *
 	 * Return a proxy. Invoked when clients obtain beans from this factory bean.
 	 * Create an instance of the AOP proxy to be returned by this factory.
 	 * The instance will be cached for a singleton, and create on each call to
@@ -247,7 +250,9 @@ public class ProxyFactoryBean extends ProxyCreatorSupport
 	@Override
 	@Nullable
 	public Object getObject() throws BeansException {
+		// 初始化通知链
 		initializeAdvisorChain();
+		// 这里对singleton和prototype进行区分，生成对应的proxy
 		if (isSingleton()) {
 			return getSingletonInstance();
 		}
@@ -308,6 +313,8 @@ public class ProxyFactoryBean extends ProxyCreatorSupport
 	}
 
 	/**
+	 * 返回此类代理对象的单例实例，如果尚未创建该实例，则单例地创建它。
+	 *
 	 * Return the singleton instance of this class's proxy object,
 	 * lazily creating it if it hasn't been created already.
 	 * @return the shared singleton proxy
@@ -316,15 +323,18 @@ public class ProxyFactoryBean extends ProxyCreatorSupport
 		if (this.singletonInstance == null) {
 			this.targetSource = freshTargetSource();
 			if (this.autodetectInterfaces && getProxiedInterfaces().length == 0 && !isProxyTargetClass()) {
+				// 根据AOP框架来判断需要代理的接口
 				// Rely on AOP infrastructure to tell us what interfaces to proxy.
 				Class<?> targetClass = getTargetClass();
 				if (targetClass == null) {
 					throw new FactoryBeanNotInitializedException("Cannot determine target class for proxy");
 				}
+				// 设置代理对象的接口
 				setInterfaces(ClassUtils.getAllInterfacesForClass(targetClass, this.proxyClassLoader));
 			}
 			// Initialize the shared singleton instance.
 			super.setFrozen(this.freezeProxy);
+			// 这里会通过AopProxy来得到代理对象
 			this.singletonInstance = getProxy(createAopProxy());
 		}
 		return this.singletonInstance;
@@ -415,12 +425,15 @@ public class ProxyFactoryBean extends ProxyCreatorSupport
 	}
 
 	/**
+	 * 初始化Advisor链，可以发现，其中有通过对IoC容器的getBean() 来获取配置好的Advisor通知器
+	 *
 	 * Create the advisor (interceptor) chain. Advisors that are sourced
 	 * from a BeanFactory will be refreshed each time a new prototype instance
 	 * is added. Interceptors added programmatically through the factory API
 	 * are unaffected by such changes.
 	 */
 	private synchronized void initializeAdvisorChain() throws AopConfigException, BeansException {
+		// 如果通知器链已经完成初始化，则直接返回
 		if (this.advisorChainInitialized) {
 			return;
 		}

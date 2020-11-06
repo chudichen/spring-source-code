@@ -31,6 +31,8 @@ import org.springframework.lang.Nullable;
 public interface MethodBeforeAdvice extends BeforeAdvice {
 
 	/**
+	 * 目标方法method开始执行前，AOP会回调此方法
+	 *
 	 * Callback before a given method is invoked.
 	 * @param method the method being invoked
 	 * @param args the arguments to the method

@@ -19,6 +19,8 @@ package org.springframework.aop.support;
 import org.aopalliance.aop.Advice;
 
 /**
+ * 本类是一个抽象类，其持有Advice的引用，而对Pointcut的引用，则在具体的子类中持有
+ *
  * Abstract generic {@link org.springframework.aop.PointcutAdvisor}
  * that allows for any {@link Advice} to be configured.
  *
