@@ -45,6 +45,8 @@ import org.springframework.lang.Nullable;
 public interface WebApplicationContext extends ApplicationContext {
 
 	/**
+	 * 用于在成功启动时将根WebApplicationContext绑定到的Context属性。
+	 *
 	 * Context attribute to bind root WebApplicationContext to on successful startup.
 	 * <p>Note: If the startup of the root context fails, this attribute can contain
 	 * an exception or error as value. Use WebApplicationContextUtils for convenient
@@ -98,6 +100,8 @@ public interface WebApplicationContext extends ApplicationContext {
 
 
 	/**
+	 * 获取Web容器的上下文，也就是ServletContext对象，这里相当于提供了一个Web容器级别的全局变量
+	 *
 	 * Return the standard Servlet API ServletContext for this application.
 	 */
 	@Nullable
