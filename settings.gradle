@@ -33,7 +33,17 @@ include "framework-bom"
 include "integration-tests"
 include 'spring-demo'
 
+// 自定义
+include 'spring-chu-aop'
+include 'spring-chu-web'
+include 'spring-chu-demo'
+include 'spring-chu-beans'
+include 'spring-chu-context'
+include 'spring-chu-core'
+
 rootProject.name = "spring"
 rootProject.children.each {project ->
 	project.buildFileName = "${project.name}.gradle"
 }
+
+

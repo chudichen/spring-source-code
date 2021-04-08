@@ -530,10 +530,10 @@ are available to you):
 [[xsd-schemas-context]]
 === The `context` Schema
 
-The `context` tags deal with `ApplicationContext` configuration that relates to plumbing
+The `annotation` tags deal with `ApplicationContext` configuration that relates to plumbing
 -- that is, not usually beans that are important to an end-user but rather beans that do
 a lot of the "`grunt`" work in Spring, such as `BeanfactoryPostProcessors`. The following
-snippet references the correct schema so that the elements in the `context` namespace are
+snippet references the correct schema so that the elements in the `annotation` namespace are
 available to you:
 
 [source,xml,indent=0,subs="verbatim,quotes"]

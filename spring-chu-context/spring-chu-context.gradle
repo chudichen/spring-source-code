@@ -1,0 +1,7 @@
+description = "Spring Chu Context"
+
+dependencies {
+    compile(project(":spring-chu-aop"))
+    compile(project(":spring-chu-beans"))
+    compile(project(":spring-chu-core"))
+}

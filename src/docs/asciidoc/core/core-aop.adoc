@@ -4040,7 +4040,7 @@ which typically is done by using the `@EnableLoadTimeWeaving` annotation, as fol
 
 Alternatively, if you prefer XML-based configuration, use the
 `<context:load-time-weaver/>` element. Note that the element is defined in the
-`context` namespace. The following example shows how to use `<context:load-time-weaver/>`:
+`annotation` namespace. The following example shows how to use `<context:load-time-weaver/>`:
 
 [source,xml,indent=0,subs="verbatim,quotes"]
 ----

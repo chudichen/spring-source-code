@@ -316,7 +316,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 
 			try {
-				// 将父类的BeanDefinition与自雷的BeanDefinition进行合并覆盖
+				// 将父类的BeanDefinition与自类的BeanDefinition进行合并覆盖
 				RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
 				// 对合并的BeanDefinition做验证，主要看属性是否为abstract的
 				checkMergedBeanDefinition(mbd, beanName, args);

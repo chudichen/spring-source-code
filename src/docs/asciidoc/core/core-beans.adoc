@@ -304,7 +304,7 @@ system properties at runtime.
 
 The namespace itself provides the import directive feature. Further
 configuration features beyond plain bean definitions are available in a selection
-of XML namespaces provided by Spring -- for example, the `context` and `util` namespaces.
+of XML namespaces provided by Spring -- for example, the `annotation` and `util` namespaces.
 
 
 [[groovy-bean-definition-dsl]]
@@ -4515,7 +4515,7 @@ the same applies for other placeholder values that match keys in the properties 
 The `PropertySourcesPlaceholderConfigurer` checks for placeholders in most properties and
 attributes of a bean definition. Furthermore, you can customize the placeholder prefix and suffix.
 
-With the `context` namespace introduced in Spring 2.5, you can configure property placeholders
+With the `annotation` namespace introduced in Spring 2.5, you can configure property placeholders
 with a dedicated configuration element. You can provide one or more locations as a
 comma-separated list in the `location` attribute, as the following example shows:
 
@@ -4601,7 +4601,7 @@ NOTE: Specified override values are always literal values. They are not translat
 bean references. This convention also applies when the original value in the XML bean
 definition specifies a bean reference.
 
-With the `context` namespace introduced in Spring 2.5, it is possible to configure
+With the `annotation` namespace introduced in Spring 2.5, it is possible to configure
 property overriding with a dedicated configuration element, as the following example shows:
 
 [source,xml,indent=0,subs="verbatim,quotes"]
@@ -4693,7 +4693,7 @@ overrides the annotations for properties wired through both approaches.
 
 As always, you can register them as individual bean definitions, but they can also be
 implicitly registered by including the following tag in an XML-based Spring
-configuration (notice the inclusion of the `context` namespace):
+configuration (notice the inclusion of the `annotation` namespace):
 
 [source,xml,indent=0,subs="verbatim,quotes"]
 ----
@@ -6036,7 +6036,7 @@ named "customerPreferenceDao" and then falls back to a primary type match for th
 		// ...
 	}
 ----
-<1> The `context` field is injected based on the known resolvable dependency type:
+<1> The `annotation` field is injected based on the known resolvable dependency type:
 `ApplicationContext`.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
@@ -6054,7 +6054,7 @@ named "customerPreferenceDao" and then falls back to a primary type match for th
 		// ...
 	}
 ----
-<1> The `context` field is injected based on the known resolvable dependency type:
+<1> The `annotation` field is injected based on the known resolvable dependency type:
 `ApplicationContext`.
 
 [[beans-value-annotations]]

@@ -1,0 +1,10 @@
+description 'Spring Chu Demo'
+
+dependencies {
+    compile(project(":spring-chu-aop"))
+    compile(project(":spring-chu-beans"))
+    compile(project(":spring-chu-context"))
+    compile(project(":spring-chu-core"))
+    compile(project(":spring-chu-web"))
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}

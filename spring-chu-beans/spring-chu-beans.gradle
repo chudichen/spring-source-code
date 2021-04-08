@@ -1,0 +1,5 @@
+description = "Spring Chu Beans"
+
+dependencies {
+    compile(project(":spring-chu-core"))
+}
