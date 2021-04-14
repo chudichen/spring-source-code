@@ -16,13 +16,7 @@
 
 package org.springframework.web.servlet.mvc.annotation;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import javax.servlet.ServletException;
-
 import org.junit.jupiter.api.Test;
-
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.aop.interceptor.SimpleTraceInterceptor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
@@ -30,12 +24,17 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.testfixture.servlet.MockHttpServletRequest;
 import org.springframework.web.testfixture.servlet.MockHttpServletResponse;
 import org.springframework.web.testfixture.servlet.MockServletConfig;
+
+import javax.servlet.ServletException;
+import java.io.IOException;
+import java.io.Writer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -56,6 +55,16 @@ public class JdkProxyControllerTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		servlet.service(request, response);
 		assertThat(response.getContentAsString()).isEqualTo("doIt");
+	}
+
+	@Test
+	public void restResult() throws Exception {
+		initServlet(RestResultImpl.class);
+
+		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/test");
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		servlet.service(request, response);
+		System.out.println(response.getContentAsString());
 	}
 
 	@Test
@@ -95,6 +104,24 @@ public class JdkProxyControllerTests {
 			}
 		};
 		servlet.init(new MockServletConfig());
+	}
+
+
+	@RestController
+	@RequestMapping("/test")
+	public interface RestResult {
+
+		@RequestMapping
+		String doIt() throws IOException;
+	}
+
+	public static class RestResultImpl implements RestResult {
+
+		//ObjectToStringHttpMessageConverter
+		@Override
+		public String doIt() throws IOException {
+			return "{\"name\":\"Tom\",\"age\":\"25\"}";
+		}
 	}
 
 

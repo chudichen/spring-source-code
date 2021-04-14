@@ -11,7 +11,9 @@ import com.chu.context.event.ApplicationEventMulticaster;
 import com.chu.context.event.ContextRefreshedEvent;
 import com.chu.context.event.SimpleApplicationEventMulticaster;
 import com.chu.core.convert.ConversionService;
+import com.chu.core.env.ConfigurableEnvironment;
 import com.chu.core.io.DefaultResourceLoader;
+import com.chu.lang.Nullable;
 
 import java.util.Collection;
 import java.util.Map;
@@ -29,6 +31,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 	public static final String CONVERSION_SERVICE_BEAN_NAME = "conversionService";
 
 	private ApplicationEventMulticaster applicationEventMulticaster;
+
+	@Nullable
+	private ConfigurableEnvironment environment;
 
 	@Override
 	public void refresh() throws BeansException {
@@ -177,6 +182,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 	@Override
 	public void registerShutdownHook() {
 		Runtime.getRuntime().addShutdownHook(new Thread(this::doClose));
+	}
+
+	@Nullable
+	public ConfigurableEnvironment getEnvironment() {
+		return environment;
 	}
 
 	protected void doClose() {

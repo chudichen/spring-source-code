@@ -1,6 +1,8 @@
 package com.chu.test.annotation;
 
 import com.chu.context.annotation.AnnotationConfigApplicationContext;
+import org.junit.jupiter.api.Test;
+
 
 /**
  * @author chudichen
@@ -8,7 +10,8 @@ import com.chu.context.annotation.AnnotationConfigApplicationContext;
  */
 public class AnnotationConfigApplicationContextTest {
 
-	public static void main(String[] args) {
+	@Test
+	public void annotationTest() {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 		context.scan("com.chu.test.annotation");
 		User bean = context.getBean(User.class);
