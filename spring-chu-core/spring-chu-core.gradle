@@ -2,4 +2,6 @@ description 'Spring Chu Core'
 
 dependencies {
     compile group: 'cn.hutool', name: 'hutool-all', version: '5.6.2'
+    testCompile("javax.annotation:javax.annotation-api")
+    testFixturesApi("org.junit.jupiter:junit-jupiter-api")
 }

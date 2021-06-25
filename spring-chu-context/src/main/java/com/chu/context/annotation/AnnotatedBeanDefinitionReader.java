@@ -10,6 +10,8 @@ public class AnnotatedBeanDefinitionReader {
 
 	private final BeanDefinitionRegistry registry;
 
+	private ConditionEvaluator conditionEvaluator;
+
 	public AnnotatedBeanDefinitionReader(BeanDefinitionRegistry registry) {
 		this.registry = registry;
 	}

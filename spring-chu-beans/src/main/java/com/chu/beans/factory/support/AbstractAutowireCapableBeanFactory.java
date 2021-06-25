@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.TypeUtil;
 import com.chu.beans.BeansException;
+import com.chu.beans.MutablePropertyValues;
 import com.chu.beans.PropertyValue;
 import com.chu.beans.PropertyValues;
 import com.chu.beans.factory.BeanFactoryAware;
@@ -150,7 +151,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				PropertyValues pvs = ((InstantiationAwareBeanPostProcessor) beanPostProcessor).postProcessPropertyValues(beanDefinition.getPropertyValues(), bean, beanName);
 				if (pvs != null) {
 					for (PropertyValue propertyValue : pvs.getPropertyValues()) {
-						beanDefinition.getPropertyValues().addPropertyValue(propertyValue);
+						((MutablePropertyValues)beanDefinition.getPropertyValues()).addPropertyValue(propertyValue);
 					}
 				}
 			}

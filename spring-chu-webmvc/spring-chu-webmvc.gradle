@@ -1,0 +1,10 @@
+description 'Spring Chu WebMvc'
+
+dependencies {
+    compile(project(":spring-chu-aop"))
+    compile(project(":spring-chu-beans"))
+    compile(project(":spring-chu-context"))
+    compile(project(":spring-chu-core"))
+    compile(project(":spring-chu-web"))
+    compileOnly("javax.servlet:javax.servlet-api")
+}

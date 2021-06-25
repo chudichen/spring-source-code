@@ -17,11 +17,20 @@ public class PropertyValue {
 		this.value = value;
 	}
 
+	public PropertyValue(PropertyValue old) {
+		this(old.getName(), old.getValue());
+	}
+
 	public String getName() {
 		return name;
 	}
 
 	public Object getValue() {
 		return value;
+	}
+
+	@Override
+	public String toString() {
+		return "bean property '" + this.name + "'";
 	}
 }

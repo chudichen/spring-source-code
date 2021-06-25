@@ -1,25 +1,85 @@
 package com.chu.beans;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.chu.lang.Nullable;
+
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * @author chudichen
  * @date 2021-03-30
  */
-public class PropertyValues {
+public interface PropertyValues extends Iterable<PropertyValue> {
 
-	private final Map<String, PropertyValue> propertyMap = new HashMap<>(256);
-
-	public void addPropertyValue(PropertyValue pv) {
-		propertyMap.put(pv.getName(), pv);
+	/**
+	 * 返回一个迭代器
+	 *
+	 * @return 迭代器
+	 */
+	@Override
+	default Iterator<PropertyValue> iterator() {
+		return Arrays.asList(getPropertyValues()).iterator();
 	}
 
-	public PropertyValue[] getPropertyValues() {
-		return this.propertyMap.values().toArray(new PropertyValue[0]);
+	/**
+	 * 切分
+	 *
+	 * @return 切
+	 */
+	@Override
+	default Spliterator<PropertyValue> spliterator() {
+		return Spliterators.spliterator(getPropertyValues(), 0);
 	}
 
-	public PropertyValue getPropertyValue(String propertyName) {
-		return propertyMap.get(propertyName);
+	/**
+	 * 返回一个流
+	 *
+	 * @return stream
+	 */
+	default Stream<PropertyValue> stream() {
+		return StreamSupport.stream(spliterator(), false);
 	}
+
+	/**
+	 * 返回持有的属性对象
+	 *
+	 * @return 属性
+	 */
+	PropertyValue[] getPropertyValues();
+
+	/**
+	 * 返回一个属性值
+	 *
+	 * @param propertyName 属性名
+	 * @return 属性
+	 */
+	@Nullable
+	PropertyValue getPropertyValue(String propertyName);
+
+	/**
+	 * 返回前面的属性
+	 *
+	 * @param old 旧的属性值
+	 * @return 属性
+	 */
+	PropertyValues changesSince(PropertyValues old);
+
+	/**
+	 * 是否包含目标元素
+	 *
+	 * @param propertyName 属性名
+	 * @return {@code true}标示包含
+	 */
+	boolean contains(String propertyName);
+
+	/**
+	 * 是否为空
+	 *
+	 * @return {@code true}标示空
+	 */
+	boolean isEmpty();
 }

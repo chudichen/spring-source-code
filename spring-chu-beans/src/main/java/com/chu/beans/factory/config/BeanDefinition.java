@@ -1,6 +1,7 @@
 package com.chu.beans.factory.config;
 
 import com.chu.beans.BeanMetadataElement;
+import com.chu.beans.MutablePropertyValues;
 import com.chu.beans.PropertyValues;
 
 import java.util.Objects;
@@ -35,7 +36,7 @@ public class BeanDefinition implements BeanMetadataElement {
 
 	public BeanDefinition(Class<?> beanClass, PropertyValues propertyValues) {
 		this.beanClass = beanClass;
-		this.propertyValues = propertyValues == null ? new PropertyValues() : propertyValues;
+		this.propertyValues = propertyValues == null ? new MutablePropertyValues() : propertyValues;
 		// 默认初始值
 		this.scope = SCOPE_SINGLETON;
 		this.singleton = true;

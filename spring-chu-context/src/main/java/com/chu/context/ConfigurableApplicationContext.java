@@ -1,6 +1,7 @@
 package com.chu.context;
 
 import com.chu.beans.BeansException;
+import com.chu.beans.factory.ConfigurableListableBeanFactory;
 
 /**
  * @author chudichen
@@ -24,4 +25,6 @@ public interface ConfigurableApplicationContext extends ApplicationContext {
 	 * 向虚拟机中注册一个钩子方法，在虚拟机关闭之前执行关闭容器操作
 	 */
 	void registerShutdownHook();
+
+	ConfigurableListableBeanFactory getBeanFactory() throws IllegalStateException;
 }
