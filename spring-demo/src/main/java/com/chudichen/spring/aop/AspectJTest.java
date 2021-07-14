@@ -10,9 +10,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class AspectJTest {
 
 	public static void main(String[] args) {
-		AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext("com.chudichen.spring.aop");
-		applicationContext.start();
-		TestBean bean = applicationContext.getBean(TestBean.class);
+		AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(TestBeanA.class.getPackage().getName());
+		TestBeanA bean = applicationContext.getBean(TestBeanA.class);
 		String result = bean.getTestStr();
 		System.out.println(result);
 	}

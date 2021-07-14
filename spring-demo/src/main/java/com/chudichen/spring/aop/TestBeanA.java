@@ -1,5 +1,6 @@
 package com.chudichen.spring.aop;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -7,11 +8,15 @@ import org.springframework.stereotype.Component;
  * @date 2021-02-04
  */
 @Component
-public class TestBean {
+public class TestBeanA {
 
-	private String testStr = "testStr";
+	@Autowired
+	private TestBeanB testBean;
+
+	private String testStr = "testStrA";
 
 	public String getTestStr() {
+		System.out.println(testBean.toString());
 		return testStr;
 	}
 

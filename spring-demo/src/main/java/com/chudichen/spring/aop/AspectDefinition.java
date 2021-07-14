@@ -4,6 +4,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,9 +13,10 @@ import org.springframework.stereotype.Component;
  */
 @Aspect
 @Component
+@EnableAspectJAutoProxy
 public class AspectDefinition {
 
-	@Pointcut("execution(* com.chudichen.spring.aop.TestBean.getTestStr() )*")
+	@Pointcut("execution(* com.chudichen.spring.aop.*.getTestStr(..))")
 	public void pointcut() {
 	}
 

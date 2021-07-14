@@ -616,7 +616,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			 * ！！！！！！！！！！！！！！！！！！！！！！！！！！！
 			 */
 			populateBean(beanName, mbd, instanceWrapper);
-			// 初始化bean对象
+			// 初始化bean对象,AOP增强
 			exposedObject = initializeBean(beanName, exposedObject, mbd);
 		}
 		catch (Throwable ex) {

@@ -96,8 +96,11 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * @param basePackages the packages to scan for component classes
 	 */
 	public AnnotationConfigApplicationContext(String... basePackages) {
+		// 初始化容器，创建reader和scanner
 		this();
+		// 扫描包下需要注入的class
 		scan(basePackages);
+		// 刷新容器并初始化
 		refresh();
 	}
 
