@@ -13,6 +13,7 @@ public class AspectJTest {
 		AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(TestBeanA.class.getPackage().getName());
 		GetStr bean = (GetStr) applicationContext.getBean("testBeanA");
 		String result = bean.getTestStr();
+		result = bean.getTestStr();
 		System.out.println(result);
 	}
 }

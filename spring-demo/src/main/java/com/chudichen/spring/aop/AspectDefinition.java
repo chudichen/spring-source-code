@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  */
 @Aspect
 @Component
-@EnableAspectJAutoProxy
+@EnableAspectJAutoProxy(proxyTargetClass=true)
 public class AspectDefinition {
 
 	@Pointcut("execution(* com.chudichen.spring.aop.*.getTestStr(..))")
